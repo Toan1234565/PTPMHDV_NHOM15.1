@@ -1,0 +1,35 @@
+﻿@model List<BaiTap.Controllers.DataPoint>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Biểu đồ Tồn Kho</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Tên Sản Phẩm', 'Số Lượng Tồn'],
+                @foreach (var point in Model)
+                {
+                    @: ['@point.Label', @point.Value], // Sử dụng 'Value' thay vì 'Y'
+                }
+            ]);
+
+            var options = {
+                title: 'Biểu đồ Tồn Kho',
+                hAxis: { title: 'Tên Sản Phẩm', titleTextStyle: { color: '#333' } },
+                vAxis: { minValue: 0 }
+            };
+
+            var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+        }
+    </script>
+</head>
+<body>
+    <div id="chart_div" style="width: 100%; height: 500px;"></div>
+</body>
+</html>

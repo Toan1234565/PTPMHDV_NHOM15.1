@@ -1,0 +1,552 @@
+﻿@model IEnumerable<BaiTap.Models.SanPham>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/styles1.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/kTcCVHR5iN5B2QFLN24BtgUO1QlYX9TQ48Ahn1wnKMEoLLmGFAzyvdz4DhP8FfjMT33FdL0hGnT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <style>
+        /* Tổng thể */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 90%;
+            margin: auto;
+            overflow: hidden;
+        }
+
+        /* Phần Tìm kiếm */
+        .Timkiem {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            width: 250px;
+            text-align: center;
+        }
+
+            .Timkiem .input-group {
+                width: 300px;
+            }
+
+            .Timkiem .form-control {
+                border-radius: 0;
+                border: 1px solid #ced4da;
+            }
+
+            .Timkiem .btn-outline-primary {
+                border-radius: 0;
+                border: 1px solid #007bff;
+            }
+
+        /* Bảng sản phẩm */
+        .table-wrapper {
+            max-height: 1000px; /* Chiều cao tối đa của bảng, có thể điều chỉnh */
+            overflow-y: auto; /* Kích hoạt cuộn dọc */
+            width: 1000px;
+            margin: 30px auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: Arial, sans-serif;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Kiểu dáng cho các ô tiêu đề */
+        th {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        /* Kiểu dáng cho các ô dữ liệu */
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* Thêm hiệu ứng hover cho hàng bảng */
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        /* Tạo khoảng cách cho bảng khi có khoảng trắng */
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        .table-bordered {
+            width: 100%; /* Kéo dài bảng để chiếm toàn bộ chiều rộng của container */
+            border-collapse: collapse;
+            margin: 30px auto;
+        }
+
+            .table-bordered th, .table-bordered td {
+                border: 1px solid #dee2e6;
+                text-align: center; /* Canh giữa nội dung trong bảng */
+            }
+
+        /* Giữ cố định tiêu đề bảng */
+        .thead-light {
+            position: sticky; /* Giữ cố định tiêu đề bảng */
+            top: 0;
+            background-color: #f8f9fa; /* Màu nền của tiêu đề bảng */
+            z-index: 1; /* Đặt thứ tự hiển thị để tiêu đề luôn ở trên */
+        }
+
+        thead, tbody tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        tbody {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        /* Phân trang */
+        .pagination {
+            display: inline-block;
+            padding: 0;
+            margin: 0;
+        }
+
+            .pagination li {
+                display: inline;
+            }
+
+                .pagination li a, .pagination li span {
+                    position: relative;
+                    float: left;
+                    padding: 6px 12px;
+                    margin-left: -1px;
+                    line-height: 1.42857143;
+                    color: #337ab7;
+                    text-decoration: none;
+                    background-color: #fff;
+                    border: 1px solid #ddd;
+                }
+
+        /* Phần Lọc sản phẩm, So sánh sản phẩm, Thêm sản phẩm */
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+            .form-actions .btn {
+                margin-right: 10px;
+            }
+
+        .modal-header {
+            background-color: #007bff;
+            color: white;
+        }
+
+            .modal-header .close {
+                color: white;
+            }
+
+        /* Bảng Sắp xếp sản phẩm */
+        .accordion-body {
+            width: 100%;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+        }
+
+            .accordion-body th {
+                font-weight: normal;
+                color: #007bff;
+                padding: 10px;
+            }
+
+                .accordion-body th a {
+                    color: #007bff;
+                    text-decoration: none;
+                }
+
+                    .accordion-body th a:hover {
+                        text-decoration: underline;
+                    }
+
+    </style>
+</head>
+<link href="~/Content/assets/css/style.css" rel="stylesheet" />
+<link href="~/Content/assets/css/modaLocSP.css" rel="stylesheet" />
+<main id="main" class="main" style="width:100%">
+
+    <div class="pagetitle">
+        <h1>Dashboard</h1>
+        <nav>
+            <ol class="breadcrumb">
+
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active">Dashboard</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+    <!-- Tìm kiếm sản phẩm -->
+    <div class="Timkiem">
+        <form action="@Url.Action("TimKiem", "QuanLySanPham")" method="get">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" name="name" placeholder="Tìm kiếm..." />
+                <button type="submit" class="btn btn-outline-primary">
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div>
+        @*loc san pham*@
+        <div class="form-actions no-color">
+            <button type="button" class="btn btn-primary LocSP" data-toggle="modal" data-target="#LocSanPhamModal">
+                Lọc sản phẩm
+            </button>
+            <div class="modal fade" id="LocSanPhamModal" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Lọc sản phẩm</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- So sánh sản phẩm -->
+    @*so sanh sanh pham*@
+    <br />
+    <div>
+        <div class="form-actions no-color">
+            <button type="button" class="btn btn-primary SoSanh" data-toggle="modal" data-target="#SosanhModall">
+                So Sanh
+            </button>
+            <div class="modal fade" id="SoSanhModal" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="SuaSanPhamTitle">So sánh thông tin sản phẩm</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Nội dung được tải động qua AJAX -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-actions no-color">
+        <button type="button" class="btn btn-primary Themmoi" data-toggle="modal">
+            Thêm sản phẩm
+        </button>
+        <div class="modal fade" id="ThemMoi" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ThemTonKho">Thong tin san pham</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Content loaded dynamically via AJAX -->
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sắp xếp sản phẩm -->
+    <div class="mb-3">
+        <table class="accordion-body" style="width:1000px">
+            <tr>
+                <th>Sắp xếp theo</th>
+                <th>@Html.ActionLink("Bán chạy", "Banchay1", "QuanLySanPham")</th>
+                <th><a href="#">Mới</a></th>
+                <th>@Html.ActionLink("Giá tăng dần", "GiaTang", "QuanLySanPham")</th>
+                <th>@Html.ActionLink("Giá giảm dần", "GiaGiam", "QuanLySanPham")</th>
+            </tr>
+        </table>
+    </div>
+    <br />
+    <section class="section dashboard">
+        <div class="row">
+            <!-- Left side columns tim de thay doi chieu rong cua giao dien ben phai -->
+            <div class="col-lg-8">
+
+                <div class="" container mt-4"">
+
+                    <!-- Recent Sales -->
+
+                    <div class="table-wrapper">
+
+
+                        <table style="font-size: 14px" border="1" width="1200px">
+                            <thead class="thead-light">
+
+                                <tr>
+                                    <th>@Html.DisplayNameFor(n => n.TenSanPham)</th>
+                                    <th>@Html.DisplayNameFor(n => n.MoTa) </th>
+                                    <th>@Html.DisplayNameFor(n => n.Soluong)</th>
+
+                                    <th>@Html.DisplayNameFor(n => n.Gia)</th>
+
+                                    <th>@Html.DisplayNameFor(n => n.HangID)</th>
+                                    <th>@Html.DisplayNameFor(n => n.DanhMucID)</th>
+                                    <th>@Html.DisplayNameFor(n => n.HinhAnh)</th>
+                                    <th colspan="3">Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.TenSanPham)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.MoTa) </td>
+                                        <td>@Html.DisplayFor(modelItem => item.Soluong)</td>
+
+                                        <td>@Html.DisplayFor(modelItem => item.Gia)</td>
+
+                                        <td>@Html.DisplayFor(modelItem => item.HangID)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.DanhMucID)</td>
+                                        <td class="Anh" style="width:120px">
+                                            @if (!string.IsNullOrEmpty(item.HinhAnh))
+                                            {
+                                                <img src="@item.HinhAnh" alt="Product Image" width="100" height="100" />
+                                            }
+                                            else
+                                            {
+                                                <p>Không tìm thấy hình ảnh</p>
+                                            }
+                                        </td>
+                                        <td>
+                                            <!-- Button to trigger modal -->
+                                            <button type="button" class="btn btn-primary sua edit-button" data-id="@item.SanPhamID">
+                                                Sửa
+                                            </button>
+
+                                            <!-- Modal Structure -->
+                                            <div class="modal fade" id="Sua" tabindex="-1" role="dialog">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="SuaTonKho">Sửa thông tin san pham</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <!-- Content loaded dynamically via AJAX -->
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                                            <button type="button" class="btn btn-primary" id="Sua">Cập nhật</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-primary xem view-button" data-id="@item.SanPhamID">Chi Tiet</button>
+                                            <div class="modal fade" id="TT" tabindex="-1" role="dialog">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="ChiTiet">Thong tin san pham</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <!-- Content loaded dynamically via AJAX -->
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            @Html.ActionLink("Xóa", "Xoa", new { id = item.SanPhamID })
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+
+                        </table>
+                    </div>
+                    <h2>Biểu Đồ Số Lượng Sản Phẩm</h2>
+                    <canvas id="productChart" width="800" height="300"></canvas>
+
+                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                    <script>
+                        var labels = @Html.Raw(Json.Encode(Model.Select(p => p.TenSanPham).ToList()));
+                        var quantities = @Html.Raw(Json.Encode(Model.Select(p => p.Soluong).ToList()));
+
+                        var ctx = document.getElementById('productChart').getContext('2d');
+                        var productChart = new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: labels,
+                                datasets: [{
+                                    label: 'Số lượng sản phẩm',
+                                    data: quantities,
+                                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                    borderColor: 'rgba(54, 162, 235, 1)',
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                scales: {
+                                    y: {
+                                        beginAtZero: true
+                                    }
+                                }
+                            }
+                        });
+                    </script>
+
+
+
+                </div>
+
+            </div>
+        </div>
+
+
+    </section>
+</main><!-- End #main -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Mở modal và tải nội dung thông qua AJAX
+         $('.edit-button').click(function() {
+             var productId = $(this).data('id');
+             $.ajax({
+                 url: '@Url.Action("SuaThongTin", "QuanLySanPham")/' + productId,
+                 method: 'GET',
+                 success: function(data) {
+                     $('#Sua').find('.modal-body').html(data);
+                     $('#Sua').modal('show');
+                 }
+             });
+         });
+        $('#Sua').on('click', '#Sua', function () {
+            $('#SuaSanPhamForm').submit();
+        });
+
+
+    });
+    $(document).ready(function () {
+        // Open the view modal and load product information
+        $('.view-button').click(function () {
+            var productId = $(this).data('id');
+            $.ajax({
+                url: '@Url.Action("XemChiTiet", "QuanLySanPham")/' + productId,
+                method: 'GET',
+                success: function (data) {
+                $('#TT').find('.modal-body').html(data);
+                $('#TT').modal('show');
+                }
+                });
+                });
+                });
+                $(document).ready(function () {
+                // Mở modal và tải nội dung thông qua AJAX
+                $('.Themmoi').click(function () {
+                $.ajax({
+                url: '@Url.Action("ThemSanPham", "QuanLySanPham")', // URL action method của bạn
+                method: 'GET',
+                success: function (data) {
+                $('#ThemMoi').find('.modal-body').html(data);
+                $('#ThemMoi').modal('show');
+                }
+                });
+                });
+                    $('#ThemMoi').on('click', '#Luu', function () {
+                        $('#ThemSanPhamFrom').submit();
+                    });
+
+                });
+                // Handle form submission for editing
+
+
+                $(document).ready(function() {
+                // Mở modal và tải nội dung thông qua AJAX
+                $('.LocSP').click(function() {
+                $.ajax({
+                url: '@Url.Action("FromLoc", "QuanLySanPham")', // URL action method của bạn
+                method: 'GET',
+                success: function(data) {
+                $('#LocSanPhamModal').find('.modal-body').html(data);
+                $('#LocSanPhamModal').modal('show');
+                }
+                });
+                });
+
+                // Xử lý form submission
+                    $('#fileterForm').submit(function (event) {
+                        event.preventDefault();
+                        $.ajax({
+                            url: '@Url.Action("LocSP","QuanLySanPham")',
+                            method: 'GET',
+                            data: $(this).serialize(),
+                            success: function (data) {
+                                $('#results').html(data);
+                                $("LocSanPhamModal").modal('hide')
+                            },
+                            Error: function (err) {
+                                console.error(err);
+                                alert("Loi khi goi API");
+                            }
+                        });
+                    });
+                });
+                $('.SoSanh').click(function() {
+                $.ajax({
+                url: '@Url.Action("FromSoSanh", "QuanLySanPham")', // URL action method của bạn
+                method: 'GET',
+                success: function(data) {
+                $('#SoSanhModal').find('.modal-body').html(data);
+                $('#SoSanhModal').modal('show');
+                }
+                });
+                });
+</script>
+
+
+
+
+

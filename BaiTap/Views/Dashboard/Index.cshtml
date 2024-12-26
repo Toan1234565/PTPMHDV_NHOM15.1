@@ -1,0 +1,42 @@
+﻿@model BaiTap.Controllers.DashboardViewModel
+
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Dashboard</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item active">Dashboard</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section dashboard">
+        <div class="row">
+            <!-- Left side columns -->
+            <div class="col-lg-8" style="width:1200px">
+                <div class="row">
+                    <!-- Recent Sales -->
+                    <div class="col-12">
+                        <div class="card recent-sales overflow-auto">
+                            <div class="filter">
+                                <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                            </div>
+
+                            <div class="card-body">
+                                <h5 class="card-title">Biểu đồ Tồn Kho</h5>
+                                @Html.Partial("TonKhoChart", Model.TonKhoData)
+                            </div>
+
+                            <div class="card-body">
+                                <h5 class="card-title">Danh Sách Sản Phẩm</h5>
+                                @Html.Partial("SanPhamTable", Model.SanPhamData)
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main><!-- End #main -->

@@ -1,0 +1,93 @@
+﻿@model IEnumerable<Dictionary<string, string>>
+
+@{
+    ViewBag.Title = "So Sánh Sản Phẩm";
+}
+
+<h2>So Sánh Sản Phẩm</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Thuộc Tính</th>
+            @foreach (var product in Model)
+            {
+                <th>@product["Tên Sản Phẩm"]</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Mã Sản Phẩm</td>
+            @foreach (var product in Model)
+            {
+                <td>@product["Mã Sản Phẩm"]</td>
+            }
+        </tr>
+        <tr>
+            <td>Màn Hình</td>
+            @foreach (var product in Model)
+            {
+                <td>@product["Màn Hình"]</td>
+            }
+        </tr>
+        <tr>
+            <td>Hệ Điều Hành</td>
+            @foreach (var product in Model)
+            {
+                <td>@product["Hệ Điều Hành"]</td>
+            }
+        </tr>
+        <tr>
+            <td>Camera Trước</td>
+            @foreach (var product in Model)
+            {
+                <td>@product["Camera Trước"]</td>
+            }
+        </tr>
+        <tr>
+            <td>Camera Sau</td>
+            @foreach (var product in Model)
+            {
+                <td>@product["Camera Sau"]</td>
+            }
+        </tr>
+        <tr>
+            <td>Chip</td>
+            @foreach (var product in Model)
+            {
+                <td>@product["Chip"]</td>
+            }
+        </tr>
+        <tr>
+            <td>RAM</td>
+            @foreach (var product in Model)
+            {
+                <td>@product["RAM"]</td>
+            }
+        </tr>
+        <tr>
+            <td>Bộ Nhớ Trong</td>
+            @foreach (var product in Model)
+            {
+                <td>@product["Bộ Nhớ Trong"]</td>
+            }
+        </tr>
+        <tr>
+            <td>Sim</td>
+            @foreach (var product in Model)
+            {
+                <td>@product["Sim"]</td>
+            }
+        </tr>
+        <tr>
+            <td>Pin</td>
+            @foreach (var product in Model)
+            {
+                <td>@product["Pin"]</td>
+            }
+        </tr>
+    </tbody>
+</table>
+
+<a href="@Url.Action("Index", "SanPham")" class="btn btn-primary">Quay lại danh sách sản phẩm</a>

@@ -1,0 +1,36 @@
+﻿
+@model List<BaiTap.Controllers.SanPhamData>
+
+<div id="sanpham_table_div" style="width: 100%; height: 400px;"></div>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', { 'packages': ['table'] });
+    google.charts.setOnLoadCallback(drawSanPhamTable);
+
+    function drawSanPhamTable() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Tên Sản Phẩm');
+        data.addColumn('number', 'Giá');
+        data.addColumn('number', 'Số Lượng');
+        data.addColumn('string', 'Hãng');
+        data.addColumn('string', 'Danh Mục');
+
+        data.addRows([
+            @foreach (var sp in Model)
+            {
+                @: ['@sp.TenSanPham', @sp.Gia, @sp.SoLuong, '@sp.Hang', '@sp.DanhMuc'],
+            }
+        ]);
+
+        var options = {
+            title: 'Danh Sách Sản Phẩm',
+            showRowNumber: true,
+            width: '100%',
+            height: '400px'
+        };
+
+        var table = new google.visualization.Table(document.getElementById('sanpham_table_div'));
+        table.draw(data, options);
+    }
+</script>

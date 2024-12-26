@@ -1,0 +1,29 @@
+﻿@model IEnumerable<BaiTap.Models.TonKho>
+
+@{
+    ViewBag.Title = "Cảnh báo tồn kho";
+}
+
+<h2>Cảnh báo tồn kho</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Mã sản phẩm</th>
+            <th>Tên sản phẩm</th>
+            <th>Số lượng tồn</th>
+            <th>Ngày cập nhật</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.SanPham.SanPhamID</td>
+                <td>@item.SanPham.TenSanPham</td>
+                <td>@item.SoLuongTon</td>
+                @*<td>@item.NgayCapNhat.ToString("dd/MM/yyyy")</td>*@
+            </tr>
+        }
+    </tbody>
+</table>
